@@ -21,3 +21,5 @@ In addition to the symfony standard edition packages, some extra packages are in
 - __[phpunit/phpunit](https://github.com/sebastianbergmann/phpunit)__
 - __[squizlabs/php_codesniffer](https://github.com/squizlabs/php_codesniffer)__
 - __[phpmd/phpmd](https://github.com/phpmd/phpmd)__
+- __[doctrine/doctrine-fixtures-bundle](https://github.com/doctrine/DoctrineFixturesBundle)__
+- __[nelmio/alice](https://github.com/nelmio/alice)__
