@@ -28,3 +28,12 @@ In addition to the symfony standard edition packages, some extra packages are in
 |__[doctrine/doctrine-fixtures-bundle](https://github.com/doctrine/DoctrineFixturesBundle)__|Load fixtures into database|
 |__[nelmio/alice](https://github.com/nelmio/alice)__|Generate fixtures data|
 
+## Assets management
+This template comes with a complete gulpfile that will allow you to compile sass,
+minify css and js, version your assets.
+
+Before compiling with gulp you will have to run `npm install` and `bower install`. 
+
+### Compiling assets in production
+To compile assets in production you should use the `--production` flag because it avoids sourcemaps
+creation. And doesn't run watch
