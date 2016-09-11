@@ -1,4 +1,4 @@
-symfony3-bp
+symfony3-bp [![Build Status](https://travis-ci.org/irozgar/symfony3-bp.svg?branch=master)](https://travis-ci.org/irozgar/symfony3-bp)
 ===========
 
 This is a starting template for Symfony 3 projects with some useful packages and

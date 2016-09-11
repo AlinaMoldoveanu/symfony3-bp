@@ -1,0 +1,12 @@
+language: php
+php:
+  - '5.6'
+  - '7.0'
+  - nightly
+  - hhvm
+
+before_script:
+    - cp app/config/parameters.yml.dist app/config/parameters.yml
+
+install:
+    - composer update
