@@ -14,21 +14,21 @@ class VersionStrategyTest extends PHPUnit_Framework_TestCase
 {
     public function testGetVersion()
     {
-        $strategy = new GulpRevVersionStrategy(__DIR__);
+        $strategy = new GulpRevVersionStrategy($_SERVER['KERNEL_DIR'], '/../tests/AppBundle/Fixtures');
 
         $this->assertEquals('07fb3d8168', $strategy->getVersion('js/scripts.js'));
     }
 
     public function testGetApplyVersion()
     {
-        $strategy = new GulpRevVersionStrategy(__DIR__);
+        $strategy = new GulpRevVersionStrategy($_SERVER['KERNEL_DIR'], '/../tests/AppBundle/Fixtures');
 
         $this->assertEquals('js/scripts-07fb3d8168.js', $strategy->applyVersion('js/scripts.js'));
     }
 
     public function testPathsAreLoadedAfterFirstUse()
     {
-        $strategy = new GulpRevVersionStrategy(__DIR__);
+        $strategy = new GulpRevVersionStrategy($_SERVER['KERNEL_DIR'], '/../tests/AppBundle/Fixtures');
 
         $strategy->applyVersion('js/scripts.js');
 

@@ -23,18 +23,20 @@ class GulpRevVersionStrategy implements VersionStrategyInterface
 
     private $paths = [];
 
-    private $cached = [];
+    private $kernelRootDir;
 
     /**
      * VersionStrategy constructor.
      *
+     * @param string $kernelRootDir
      * @param string $manifestDir
      * @param string $manifestFilename
      */
-    public function __construct($manifestDir, $manifestFilename = 'rev-manifest.json')
+    public function __construct($kernelRootDir, $manifestDir, $manifestFilename = 'rev-manifest.json')
     {
         $this->manifestFilename = $manifestFilename;
         $this->manifestDir = $manifestDir;
+        $this->kernelRootDir = $kernelRootDir;
     }
 
     public function getVersion($path)
@@ -64,7 +66,7 @@ class GulpRevVersionStrategy implements VersionStrategyInterface
         }
 
         // If a file exists, it doesn't have a version so we ignore it
-        $fileExists = file_exists($path);
+        $fileExists = file_exists($this->kernelRootDir . '/../web/' . $path);
         $hasVersion = isset($this->paths[$path]);
 
         if (!$fileExists && !$hasVersion) {
@@ -76,7 +78,7 @@ class GulpRevVersionStrategy implements VersionStrategyInterface
 
     private function loadManifestFile()
     {
-        $manifestPath = $this->manifestDir . '/' . $this->manifestFilename;
+        $manifestPath = $this->kernelRootDir . '/' . $this->manifestDir . '/' . $this->manifestFilename;
 
         if (!is_file($manifestPath)) {
             throw new Exception(
