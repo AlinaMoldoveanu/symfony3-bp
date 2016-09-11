@@ -5,11 +5,15 @@ This is a starting template for Symfony 3 projects with some useful packages and
 configuration
 
 ## Installation
-
-To install clone the repository using git:
+To install, follow this steps:
+  - Clone the repository using git:
 `git clone git@github.com:irozgar/symfony3-bp.git YOUR_PROJECT_FOLDER`
+  - Rename your project name and customize this README file
+  - Install composer dependencies with `composer update`
+  - Install node dependencies `npm install`
+  - Install bower dependencies with `bower install`
+  - Run gulp `gulp` to compile your assets
 
-After that change the project name in composer.json to your project name
 
 ## Included packages
 In addition to the symfony standard edition packages, some extra packages are included
@@ -36,4 +40,4 @@ Before compiling with gulp you will have to run `npm install` and `bower install
 
 ### Compiling assets in production
 To compile assets in production you should use the `--production` flag because it avoids sourcemaps
-creation. And doesn't run watch
+creation. And does not run watch.
