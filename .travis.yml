@@ -7,6 +7,15 @@ php:
 
 before_script:
     - cp app/config/parameters.yml.dist app/config/parameters.yml
+    - gulp --production
+
+before_install:
+    - npm install -g gulp
+    - npm install -g bower
 
 install:
     - composer update
+    - npm install
+    - bower install
+
+

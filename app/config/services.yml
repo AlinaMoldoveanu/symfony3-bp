@@ -4,7 +4,3 @@ parameters:
 #    parameter_name: value
 
 services:
-    app.assets.gulp_rev_version_strategy:
-        class: AppBundle\Twig\GulpRevVersionStrategy
-        arguments: ["%kernel.root_dir%", "Resources/assets"]
-        public: false

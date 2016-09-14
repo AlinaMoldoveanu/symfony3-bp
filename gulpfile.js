@@ -8,6 +8,7 @@ var plumber = require('gulp-plumber');
 var uglify = require('gulp-uglify');
 var rev = require('gulp-rev');
 var del = require('del');
+var q = require('q');
 
 var config = {
     assetsPath: 'app/Resources/assets',
@@ -26,24 +27,53 @@ if (config.production) {
     gulp.task('default', ['clean', 'styles', 'scripts', 'fonts', 'watch']);
 }
 
+/**
+ * Task for building styles
+ *
+ * Add the styles to the file you want or add a new file to the queue of files to compile
+ */
 gulp.task('styles', function () {
-    app.addStyle([
+    var queue = new TasksQueue();
+
+    queue.queue([
         config.assetsPath +'/sass/main.scss'
     ], 'styles.css');
+
+    return queue.run(app.addStyle);
 });
 
-gulp.task('scripts', function () {
-    app.addScript([
+
+/**
+ * Task for building scripts
+ *
+ * Add the scripts to the file you want or add a new file to the queue of files to compile
+ */
+gulp.task('scripts', ['styles'], function () {
+    var queue = new TasksQueue();
+
+    queue.queue([
         config.assetsPath + '/js/main.js'
     ], 'scripts.js');
+
+    return queue.run(app.addScript);
 });
 
+
+/**
+ * Tasks for copying fonts to the public folder
+ *
+ * Add the fonts you want to copy
+ */
 gulp.task('fonts', function () {
     app.copy([
         // Write here the path to your fonts
     ], config.compiledPath +'/fonts');
 });
 
+
+/**
+ * Clean all files generated during a previous compilation
+ */
 gulp.task('clean', function () {
     del.sync(config.revManifestPath);
     del.sync('web/css/*');
@@ -51,6 +81,10 @@ gulp.task('clean', function () {
     del.sync('web/fonts/*');
 });
 
+
+/**
+ * Watch for changes in styles and scripts
+ */
 gulp.task('watch', function () {
     gulp.watch(config.assetsPath +'/'+ config.sassPattern, ['styles']);
     gulp.watch(config.assetsPath +'/js/**/*.js', ['scripts']);
@@ -59,8 +93,9 @@ gulp.task('watch', function () {
 
 var app = {};
 
+
 app.addStyle = function (paths, filename) {
-    gulp.src(paths)
+    return gulp.src(paths)
         .pipe(plumber())
         .pipe((!config.production) ? sourcemaps.init() : util.noop())
         .pipe(sass())
@@ -76,7 +111,7 @@ app.addStyle = function (paths, filename) {
 };
 
 app.addScript = function (paths, filename) {
-    gulp.src(paths)
+    return gulp.src(paths)
         .pipe(plumber())
         .pipe((!config.production) ? sourcemaps.init() : util.noop())
         .pipe(concat('js/'+ filename))
@@ -91,6 +126,41 @@ app.addScript = function (paths, filename) {
 };
 
 app.copy = function (files, outputDir) {
-    gulp.src(files)
+    return gulp.src(files)
         .pipe(gulp.dest(outputDir));
+};
+
+
+/**
+ * Object that queues gulp src items and runs them synchronously
+ *
+ */
+var TasksQueue = function() {
+    this.queuedItems = [];
+};
+
+TasksQueue.prototype.queue = function () {
+    this.queuedItems.push(arguments);
+};
+
+TasksQueue.prototype.run = function (callback) {
+    var queuedItems = this.queuedItems;
+    var i = 0;
+    var deferred = q.defer();
+
+    runNext();
+
+    return deferred.promise;
+
+    function runNext() {
+        if (i >= queuedItems.length) {
+            deferred.resolve();
+            return ;
+        }
+
+        callback.apply(app, queuedItems[i]).on('end', function () {
+            i++;
+            runNext();
+        });
+    }
 };

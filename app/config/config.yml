@@ -31,7 +31,7 @@ framework:
     fragments:       ~
     http_method_override: true
     assets:
-        version_strategy: app.assets.gulp_rev_version_strategy
+        version_strategy: irozgar_gulp_rev_versions.asset.gulp_rev_version_strategy
 
 # Twig Configuration
 twig:
