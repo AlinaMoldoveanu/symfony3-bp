@@ -14,10 +14,3 @@ web_profiler:
 
 swiftmailer:
     disable_delivery: true
-
-services:
-    # Use re-manifest.json Fixture when running tests
-    app.assets.gulp_rev_version_strategy:
-        class: AppBundle\Twig\GulpRevVersionStrategy
-        arguments: ["%kernel.root_dir%", "../tests/AppBundle/Fixtures"]
-        public: false
